@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UNCLE SAM'S | Pure Good.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #A68D7D;
+            --brand-green: #10b981;
+            --brand-green-glow: rgba(16, 185, 129, 0.35);
+            --brand-orange: #f97316;
+            --brand-red: #ef4444;
+            --glass-card: rgba(20, 12, 8, 0.42);
+            --glass-inner: rgba(0, 0, 0, 0.28);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --text-primary: #ffffff;
+            --text-secondary: #e2d4cb;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-pill: 9999px;
+
+            --glider-bg: rgba(255, 255, 255, 0.12);
+            --glider-border: rgba(255, 255, 255, 0.45);
+            --glider-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3),
+                            inset 0 -1px 2px rgba(0, 0, 0, 0.15),
+                            0 8px 24px rgba(0, 0, 0, 0.2);
+
+            --qr-modal-bg: rgba(28, 18, 14, 0.92);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #EED7C8;
+            --brand-green: #059669;
+            --brand-green-glow: rgba(5, 150, 105, 0.25);
+            --brand-orange: #ea580c;
+            --glass-card: rgba(255, 255, 255, 0.48);
+            --glass-inner: rgba(255, 255, 255, 0.35);
+            --glass-border: rgba(255, 255, 255, 0.65);
+            --text-primary: #3d2c23;
+            --text-secondary: #634f44;
+
+            --glider-bg: rgba(255, 255, 255, 0.35);
+            --glider-border: rgba(255, 255, 255, 0.85);
+            --glider-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.8),
+                            inset 0 -1px 2px rgba(0, 0, 0, 0.05),
+                            0 6px 16px rgba(0, 0, 0, 0.08);
+
+            --qr-modal-bg: rgba(255, 255, 255, 0.92);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            padding-bottom: 60px;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        .top-utilities {
+            position: fixed;
+            top: 20px; right: 20px;
+            display: flex; gap: 10px; z-index: 1001;
+        }
+
+        .util-btn {
+            background: var(--glass-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 12px; border-radius: var(--radius-pill);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .util-btn:hover {
+            transform: translateY(-2px);
+            border-color: #ffffff;
+        }
+
+        .hero {
+            padding: 44px 16px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .logo-img {
+            height: 110px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.18));
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+        .word-img {
+            height: 85px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.18));
+        }
+
+        .home-menu-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 10px 22px;
+            background: var(--glass-inner);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .home-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .nav-container {
+            position: sticky; top: 16px;
+            display: flex; justify-content: center;
+            z-index: 1000; padding: 0 16px; margin-bottom: 28px;
+        }
+
+        .segmented-control {
+            position: relative; display: inline-flex;
+            background: var(--glass-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 5px;
+            border-radius: var(--radius-pill);
+            gap: 4px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            max-width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none;
+            touch-action: pan-x;
+        }
+        .segmented-control::-webkit-scrollbar { display: none; }
+
+        .segmented-control button {
+            background: none; border: none; color: var(--text-secondary);
+            font-size: 0.85rem; font-weight: 700; padding: 10px 20px;
+            border-radius: var(--radius-pill); cursor: pointer; position: relative; z-index: 2;
+            display: flex; align-items: center; gap: 6px;
+            white-space: nowrap;
+            transition: color 0.3s ease;
+        }
+        .segmented-control button.active {
+            color: var(--text-primary);
+        }
+
+        .segment-glider {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            height: calc(100% - 10px);
+            background: var(--glider-bg);
+            backdrop-filter: blur(16px) saturate(160%);
+            -webkit-backdrop-filter: blur(16px) saturate(160%);
+            border: 1.5px solid var(--glider-border);
+            border-radius: var(--radius-pill);
+            z-index: 3;
+            transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), width 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: var(--glider-shadow);
+            cursor: grab;
+        }
+        .segment-glider:active {
+            cursor: grabbing;
+        }
+        .segment-glider.dragging {
+            transition: none !important;
+        }
+
+        .container { max-width: 820px; margin: 0 auto; padding: 0 16px; }
+
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card {
+            background: var(--glass-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 30px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; margin-top: 16px; }
+        .menu-item-card {
+            background: var(--glass-inner);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .menu-item-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        .item-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+        .item-name { font-weight: 700; font-size: 1.05rem; }
+        .item-cal { font-size: 0.78rem; font-weight: 700; opacity: 0.8; background: rgba(255,255,255,0.12); padding: 2px 8px; border-radius: 10px; }
+        .item-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 10px; }
+
+        .secret-egg-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 22px; height: 22px; margin-left: 8px; vertical-align: middle;
+            color: var(--text-secondary); opacity: 0.45; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .secret-egg-icon:hover {
+            opacity: 1; color: var(--brand-orange); transform: rotate(15deg) scale(1.2);
+        }
+
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px; margin-top: 16px; }
+        .team-card {
+            background: var(--glass-inner);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 22px 16px; text-align: center;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .team-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        .team-avatar-frame {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08); margin: 0 auto 12px;
+            display: flex; align-items: center; justify-content: center;
+            border: 2px solid var(--glass-border);
+            overflow: hidden; position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .team-avatar-frame img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        .packaging-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 16px; }
+        .pkg-card {
+            background: var(--glass-inner);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 16px; }
+        .gallery-item {
+            aspect-ratio: 4/3;
+            background: var(--glass-inner);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-weight: 600; color: var(--text-secondary); gap: 8px;
+        }
+
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            display: flex; align-items: center; justify-content: center; z-index: 2000;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content {
+            background: var(--qr-modal-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            padding: 36px 30px; border-radius: 32px; text-align: center;
+            max-width: 360px; width: 90%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .qr-wrapper {
+            background: #ffffff;
+            padding: 18px;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+            margin: 20px 0;
+            display: inline-block;
+        }
+        #qrcode img { display: block; margin: 0 auto; }
+
+        .game-modal {
+            position: fixed; inset: 0; background: rgba(5, 3, 2, 0.92);
+            backdrop-filter: blur(24px); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 4000;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .game-modal.active { opacity: 1; pointer-events: auto; }
+
+        .game-box {
+            position: relative; width: 92%; max-width: 440px; height: 520px;
+            background: var(--glass-card); border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg); overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+            display: flex; flex-direction: column;
+            outline: none;
+        }
+        .game-box.damage-flash { animation: shakeFlash 0.3s ease-in-out; }
+
+        .game-header {
+            padding: 14px 18px; background: rgba(0, 0, 0, 0.3);
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--glass-border); z-index: 5;
+        }
+
+        .health-bar { display: flex; gap: 4px; color: var(--brand-red); font-size: 1.1rem; }
+
+        .game-canvas {
+            position: relative; flex-grow: 1; overflow: hidden; touch-action: none;
+            background: radial-gradient(circle at 50% 30%, rgba(16, 185, 129, 0.1), rgba(0, 0, 0, 0.85) 80%);
+        }
+
+        .falling-item {
+            position: absolute; font-size: 28px; width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center; z-index: 3;
+            will-change: transform; pointer-events: none; top: 0; left: 0;
+            transition: transform 0.05s linear;
+        }
+
+        .player-basket {
+            position: absolute;
+            bottom: 20px;
+            height: 18px;
+            width: 80px;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: var(--radius-pill);
+            z-index: 4;
+            box-shadow: 0 0 15px var(--brand-green-glow);
+            will-change: transform;
+            left: 0;
+            transition: transform 0.05s ease-out;
+        }
+
+        .score-float {
+            position: absolute;
+            font-size: 1.2rem;
+            font-weight: 800;
+            pointer-events: none;
+            z-index: 10;
+            animation: floatUpFade 0.75s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        .score-float.plus {
+            color: #10b981;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+        }
+        .score-float.minus {
+            color: #ef4444;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+        }
+        .score-float.dodge {
+            color: #f97316;
+            text-shadow: 0 0 10px rgba(249, 115, 22, 0.6);
+            font-size: 1rem;
+        }
+
+        .level-up-banner {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            background: rgba(249, 115, 22, 0.95);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: var(--radius-pill);
+            font-weight: 800;
+            font-size: 1.3rem;
+            box-shadow: 0 0 30px rgba(249, 115, 22, 0.8);
+            z-index: 25;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .level-up-banner.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        @keyframes floatUpFade {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            50% { opacity: 1; transform: translateY(-25px) scale(1.25); }
+            100% { opacity: 0; transform: translateY(-45px) scale(0.9); }
+        }
+
+        .game-over-screen {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.88);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 20; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .game-over-screen.active { opacity: 1; pointer-events: auto; }
+
+        .game-controls-hint {
+            position: absolute; bottom: 4px; left: 0; right: 0;
+            text-align: center; font-size: 0.72rem; color: rgba(255,255,255,0.4);
+            pointer-events: none; z-index: 2;
+        }
+
+        @keyframes shakeFlash {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-6px, 3px); }
+            50% { transform: translate(6px, -3px); }
+            75% { transform: translate(-4px, 2px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-utilities">
+        <button class="util-btn" onclick="toggleTheme()" aria-label="Toggle Theme"><i data-lucide="moon" id="themeIcon"></i></button>
+        <button class="util-btn" onclick="openQrModal()" aria-label="QR Code"><i data-lucide="qr-code"></i></button>
+    </div>
+
+    <header class="hero">
+        <img src="Logo.png" alt="Uncle Sam's Logo" class="logo-img" onclick="triggerLogoEasterEgg()">
+        <img src="word.png" alt="Uncle Sam's Wordmark" class="word-img">
+    </header>
+
+    <div class="nav-container">
+        <nav class="segmented-control" id="navControl">
+            <div class="segment-glider" id="glider"></div>
+            <button class="active" data-tab="home" onclick="clickTab(this, 'home')"><i data-lucide="home"></i> Home</button>
+            <button data-tab="menu" id="menuNavBtn" onclick="clickTab(this, 'menu')"><i data-lucide="utensils"></i> Menu</button>
+            <button data-tab="sustainability" onclick="clickTab(this, 'sustainability')"><i data-lucide="leaf"></i> Sustainability</button>
+            <button data-tab="team" onclick="clickTab(this, 'team')"><i data-lucide="users"></i> Team</button>
+            <button data-tab="media" onclick="clickTab(this, 'media')"><i data-lucide="image"></i> Media</button>
+        </nav>
+    </div>
+
+    <main class="container">
+        <!-- HOME TAB -->
+        <section id="home" class="tab-content card active" style="text-align: center;">
+
+            <h1 style="font-size: 3.2rem; font-weight: 800; margin-bottom: 12px;">Pure Good.</h1>
+            <p style="color: var(--text-secondary); line-height: 1.6;">Fresh, wholesome meals prepared with sustainable practices, zero preservatives, and eco-friendly banana leaf wraps. <b>Oh and don't forget our easter egg!</b></p>
+
+            <button class="home-menu-btn" onclick="navigateToMenu()">
+                <span>View Menu</span>
+                <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+            </button>
+        </section>
+
+        <!-- MENU TAB -->
+        <section id="menu" class="tab-content card">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; margin-bottom: 16px;">
+                <h2 style="font-size: 1.6rem; font-weight: 800;">
+                    Our Menu
+                    <span class="secret-egg-icon" title="Secret Easter Egg!" onclick="startGame()">
+                        <i data-lucide="egg"></i>
+                    </span>
+                </h2>
+                <span style="font-size: 0.8rem; color: var(--text-secondary);">Served in Banana Leaves</span>
+            </div>
+
+            <!-- MAINS SECTION -->
+            <h3 style="font-size: 1.2rem; margin: 16px 0 12px; color: var(--text-primary); border-bottom: 1px dashed var(--glass-border); padding-bottom: 4px;">Mains</h3>
+            <div class="menu-grid">
+                <div class="menu-item-card">
+                    <div>
+                        <div class="item-header">
+                            <span class="item-name"><i data-lucide="chef-hat" style="width:20px; height:20px; vertical-align:-3px; margin-right:6px;"></i>Butter Chicken Burrito</span>
+                            <span class="item-cal">650 kcal</span>
+                        </div>
+                        <p class="item-desc">Tender, spiced chicken simmered in a rich, velvety butter masala sauce, wrapped in a warm flour tortilla.</p>
+                    </div>
+                </div>
+
+                <div class="menu-item-card">
+                    <div>
+                        <div class="item-header">
+                            <span class="item-name"><i data-lucide="soup" style="width:20px; height:20px; vertical-align:-3px; margin-right:6px;"></i>White Sauce Veg Pasta</span>
+                            <span class="item-cal">520 kcal</span>
+                        </div>
+                        <p class="item-desc">Penne pasta tossed in a smooth, garlic-infused parmesan cream sauce, loaded with fresh sautéed vegetables and herbs.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DESSERTS SECTION -->
+            <h3 style="font-size: 1.2rem; margin: 24px 0 12px; color: var(--text-primary); border-bottom: 1px dashed var(--glass-border); padding-bottom: 4px;">Desserts</h3>
+            <div class="menu-grid">
+                <div class="menu-item-card">
+                    <div>
+                        <div class="item-header">
+                            <span class="item-name"><i data-lucide="cookie" style="width:20px; height:20px; vertical-align:-3px; margin-right:6px;"></i>Dark Chocolate & Marshmallow Cookie</span>
+                            <span class="item-cal">380 kcal</span>
+                        </div>
+                        <p class="item-desc">Decadent dark chocolate cookies baked with gooey, melted marshmallows for the ultimate chocolate fix.</p>
+                    </div>
+                </div>
+
+                <div class="menu-item-card">
+                    <div>
+                        <div class="item-header">
+                            <span class="item-name"><i data-lucide="sparkles" style="width:20px; height:20px; vertical-align:-3px; margin-right:6px;"></i>Kinder Joy Loaded Cookie</span>
+                            <span class="item-cal">410 kcal</span>
+                        </div>
+                        <p class="item-desc">Soft-baked signature cookies topped with rich milk chocolate hazelnut cream and crunchy Kinder Joy bits.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DRINKS SECTION -->
+            <h3 style="font-size: 1.2rem; margin: 24px 0 12px; color: var(--text-primary); border-bottom: 1px dashed var(--glass-border); padding-bottom: 4px;">Drinks</h3>
+            <div class="menu-grid">
+                <div class="menu-item-card">
+                    <div>
+                        <div class="item-header">
+                            <span class="item-name"><i data-lucide="citrus" style="width:20px; height:20px; vertical-align:-3px; margin-right:6px;"></i>Classic House Lemonade</span>
+                            <span class="item-cal">140 kcal</span>
+                        </div>
+                        <p class="item-desc">Freshly squeezed lemons blended with pure cane sugar and chilled water for a crisp, refreshing citrus boost.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUSTAINABILITY TAB -->
+        <section id="sustainability" class="tab-content card">
+            <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 12px;">Sustainable Eco-Pledge</h2>
+            <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                We have eliminated single-use plastics from our entire service workflow in favor of fully compostable, earth-friendly materials while aligning directly with United Nations SDGs.
+            </p>
+
+            <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 12px;">100% Eco Packaging</h3>
+            <div class="packaging-grid" style="margin-bottom: 24px;">
+                <div class="pkg-card">
+                    <h4 style="font-size:1rem; font-weight:700; display:flex; align-items:center; gap:8px;">
+                        <i data-lucide="leaf" style="color: var(--brand-green);"></i> Natural Banana Leaves
+                    </h4>
+                    <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5;">
+                        Fresh organic banana leaves serve as natural food wraps that preserve humidity while decomposing naturally.
+                    </p>
+                </div>
+                <div class="pkg-card">
+                    <h4 style="font-size:1rem; font-weight:700; display:flex; align-items:center; gap:8px;">
+                        <i data-lucide="box" style="color: var(--brand-green);"></i> Kraft Paper Boxes
+                    </h4>
+                    <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5;">
+                        Unbleached, recyclable paper boxes keep meal items warm without plastic wax coatings.
+                    </p>
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 12px;">UN SDG Goals We Support</h3>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="background: var(--glass-inner); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--glass-border);">
+                    <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;"><i data-lucide="recycle" style="width: 18px; height: 18px;"></i> SDG 12: Responsible Consumption</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">Compostable wraps and local farm sourcing ensure near-zero landfill waste.</p>
+                </div>
+                <div style="background: var(--glass-inner); padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--glass-border);">
+                    <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;"><i data-lucide="globe" style="width: 18px; height: 18px;"></i> SDG 13: Climate Action</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">Shortening ingredient supply chains to local suppliers drastically cuts transit emissions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEAM TAB -->
+        <section id="team" class="tab-content card">
+            <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 12px;">Our Team</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar-frame">
+                        <img src="IMG_0478.jpg" alt="Aarnav" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <i data-lucide="crown" style="display:none; width:32px; height:32px;"></i>
+                    </div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700;">Aarnav</h3>
+                    <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">Team Leader</p>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-avatar-frame">
+                        <img src="IMG_0480.jpg" alt="Oliver" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <i data-lucide="utensils-crossed" style="display:none; width:32px; height:32px;"></i>
+                    </div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700;">Oliver</h3>
+                    <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">Main Chef</p>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-avatar-frame">
+                        <img src="IMG_0479.jpg" alt="Joaquin" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <i data-lucide="chef-hat" style="display:none; width:32px; height:32px;"></i>
+                    </div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700;">Joaquin</h3>
+                    <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">Sous Chef</p>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-avatar-frame">
+                        <img src="IMG_0481.jpg" alt="Aryamman" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <i data-lucide="code-2" style="display:none; width:32px; height:32px;"></i>
+                    </div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700;">Aryamman</h3>
+                    <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px;">Design & Code</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MEDIA TAB -->
+        <section id="media" class="tab-content card">
+            <h2 style="font-size: 1.6rem; font-weight: 800; margin-bottom: 12px;">Media & Showcase</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><i data-lucide="image"></i> Chicken Burrito</div>
+                <div class="gallery-item"><i data-lucide="image"></i> White Sauce Pasta</div>
+                <div class="gallery-item"><i data-lucide="image"></i> Specialty Cookies</div>
+                <div class="gallery-item"><i data-lucide="image"></i> Fresh Lemonade</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- QR MODAL -->
+    <div class="modal-overlay" id="qrModal" onclick="closeQrModal(event)">
+        <div class="modal-content">
+            <h3 style="font-size: 1.35rem; font-weight: 800;">Scan to Open Website</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">Access full site on mobile device</p>
+            <div class="qr-wrapper">
+                <div id="qrcode"></div>
+            </div>
+            <button onclick="closeQrModal(null)" style="background:var(--text-primary); color:var(--bg-color); border:none; padding:10px 24px; border-radius:20px; font-weight:700; font-size:0.9rem; cursor:pointer; transition: transform 0.2s ease;">Close</button>
+        </div>
+    </div>
+
+    <!-- EASTER EGG GAME MODAL -->
+    <div class="game-modal" id="gameModal">
+        <div class="game-box" id="gameBox" tabindex="0">
+            <div class="game-header">
+                <div>
+                    <h3 style="font-size:1rem; font-weight:800;">🌯 Fresh Burrito Catcher</h3>
+                    <div class="health-bar" id="healthBar">
+                        <i data-lucide="heart" fill="#ef4444"></i>
+                        <i data-lucide="heart" fill="#ef4444"></i>
+                        <i data-lucide="heart" fill="#ef4444"></i>
+                    </div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-weight:800; color:var(--brand-green); font-size:0.95rem;" id="gameScore">Score: 0</div>
+                    <div style="font-weight:800; color:var(--brand-orange); font-size:0.85rem;" id="gameLevel">Level: 1</div>
+                </div>
+                <button onclick="closeGame()" style="background:none; border:none; color:var(--text-primary); cursor:pointer;"><i data-lucide="x"></i></button>
+            </div>
+
+            <div class="game-canvas" id="gameCanvas">
+                <div class="level-up-banner" id="levelUpBanner">LEVEL UP!</div>
+                <div class="player-basket" id="basket"></div>
+                <div class="game-controls-hint">Use ⬅ ➡️ Arrow Keys / A-D or Drag on Mobile</div>
+
+                <div class="game-over-screen" id="gameOverScreen">
+                    <h2 style="font-size:2rem; font-weight:800; color:var(--brand-red); margin-bottom:8px;">GAME OVER</h2>
+                    <p style="font-size:1rem; color:var(--text-secondary); margin-bottom:18px;" id="finalScoreText">Score: 0</p>
+                    <button onclick="startGame()" style="background:var(--brand-green); color:#fff; border:none; padding:10px 24px; border-radius:var(--radius-pill); font-weight:800; cursor:pointer;">Play Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const glider = document.getElementById('glider');
+        const buttons = Array.from(document.querySelectorAll('.segmented-control button'));
+
+        function moveGliderTo(btn) {
+            glider.style.width = `${btn.offsetWidth}px`;
+            glider.style.transform = `translateX(${btn.offsetLeft - 5}px)`;
+        }
+
+        function clickTab(btn, tabId) {
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            moveGliderTo(btn);
+
+            btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function navigateToMenu() {
+            const menuBtn = document.getElementById('menuNavBtn');
+            if (menuBtn) {
+                clickTab(menuBtn, 'menu');
+            }
+        }
+
+        let isDragging = false;
+        let startX = 0;
+        let initialGliderLeft = 0;
+
+        function getClosestButton(currentLeft) {
+            let closest = buttons[0];
+            let minDistance = Infinity;
+            buttons.forEach(btn => {
+                const targetLeft = btn.offsetLeft - 5;
+                const dist = Math.abs(currentLeft - targetLeft);
+                if (dist < minDistance) {
+                    minDistance = dist;
+                    closest = btn;
+                }
+            });
+            return closest;
+        }
+
+        function onDragStart(e) {
+            isDragging = true;
+            glider.classList.add('dragging');
+            startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+
+            const activeBtn = document.querySelector('.segmented-control button.active');
+            initialGliderLeft = activeBtn ? activeBtn.offsetLeft - 5 : 0;
+        }
+
+        function onDragMove(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            const currentX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            const deltaX = currentX - startX;
+            let newX = initialGliderLeft + deltaX;
+
+            const minX = buttons[0].offsetLeft - 5;
+            const maxX = buttons[buttons.length - 1].offsetLeft - 5;
+            newX = Math.max(minX, Math.min(newX, maxX));
+
+            glider.style.transform = `translateX(${newX}px)`;
+
+            const closestBtn = getClosestButton(newX);
+            buttons.forEach(b => b.classList.remove('active'));
+            closestBtn.classList.add('active');
+            glider.style.width = `${closestBtn.offsetWidth}px`;
+        }
+
+        function onDragEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            glider.classList.remove('dragging');
+
+            const activeBtn = document.querySelector('.segmented-control button.active');
+            if (activeBtn) {
+                const tabId = activeBtn.getAttribute('data-tab');
+                clickTab(activeBtn, tabId);
+            }
+        }
+
+        glider.addEventListener('mousedown', onDragStart);
+        glider.addEventListener('touchstart', onDragStart, { passive: false });
+
+        window.addEventListener('mousemove', onDragMove);
+        window.addEventListener('touchmove', onDragMove, { passive: false });
+
+        window.addEventListener('mouseup', onDragEnd);
+        window.addEventListener('touchend', onDragEnd);
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+
+            const icon = document.getElementById('themeIcon');
+            icon.setAttribute('data-lucide', newTheme === 'dark' ? 'moon' : 'sun');
+            lucide.createIcons();
+
+            const activeBtn = document.querySelector('.segmented-control button.active');
+            if (activeBtn) moveGliderTo(activeBtn);
+        }
+
+        let qrDone = false;
+        function openQrModal() {
+            document.getElementById('qrModal').classList.add('active');
+            if (!qrDone) {
+                const websiteUrl = "https://unclesamsstall.github.io/Z/";
+                new QRCode(document.getElementById("qrcode"), {
+                    text: websiteUrl,
+                    width: 200,
+                    height: 200
+                });
+                qrDone = true;
+            }
+        }
+
+        function closeQrModal(e) {
+            if (!e || e.target.id === 'qrModal') document.getElementById('qrModal').classList.remove('active');
+        }
+
+        function triggerLogoEasterEgg() {
+            const audio = new Audio('burp.mp3');
+            audio.play().catch(err => console.log('Audio playback prevented or burp.mp3 not found', err));
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.25 }
+                });
+            }
+        }
+
+        let gameActive = false;
+        let score = 0;
+        let lives = 3;
+        let currentLevel = 1;
+        let animationFrameId = null;
+        let lastSpawnTime = 0;
+        let basketPixelX = 180;
+        let keysState = { left: false, right: false };
+        let fallingEntities = [];
+
+        const GOOD_ITEMS = ['🌯', '🍪', '🍋', '🍝', '🥗', '🍎'];
+        const ENEMY_ITEMS = ['🍟', '🍔', '🍕', '🌭', '🥤', '🍩'];
+
+        function renderHealth() {
+            const bar = document.getElementById('healthBar');
+            bar.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                if (i < lives) {
+                    bar.innerHTML += `<i data-lucide="heart" fill="#ef4444" style="color:#ef4444;"></i>`;
+                } else {
+                    bar.innerHTML += `<i data-lucide="heart" style="color:rgba(255,255,255,0.2);"></i>`;
+                }
+            }
+            lucide.createIcons();
+        }
+
+        function updateBasketPosition() {
+            const canvas = document.getElementById('gameCanvas');
+            const canvasWidth = canvas.offsetWidth || 300;
+            const basket = document.getElementById('basket');
+
+            basketPixelX = Math.max(40, Math.min(canvasWidth - 40, basketPixelX));
+            basket.style.transform = `translateX(${basketPixelX - 40}px)`;
+        }
+
+        function showFloatingScore(text, type, xPx, yPx) {
+            const canvas = document.getElementById('gameCanvas');
+            const floatEl = document.createElement('div');
+            floatEl.className = `score-float ${type}`;
+            floatEl.innerText = text;
+            floatEl.style.left = `${xPx - 20}px`;
+            floatEl.style.top = `${yPx - 20}px`;
+
+            canvas.appendChild(floatEl);
+
+            setTimeout(() => {
+                floatEl.remove();
+            }, 750);
+        }
+
+        function triggerLevelUpBanner(lvl) {
+            const banner = document.getElementById('levelUpBanner');
+            banner.innerText = `LEVEL ${lvl}!`;
+            banner.classList.add('show');
+            setTimeout(() => {
+                banner.classList.remove('show');
+            }, 1200);
+        }
+
+        function checkLevelProgression() {
+            let newLevel = 1;
+            if (score >= 1700) newLevel = 8;
+            else if (score >= 1200) newLevel = 7;
+            else if (score >= 1000) newLevel = 6;
+            else if (score >= 800) newLevel = 5;
+            else if (score >= 600) newLevel = 4;
+            else if (score >= 400) newLevel = 3;
+            else if (score >= 200) newLevel = 2;
+
+            if (newLevel > currentLevel) {
+                currentLevel = newLevel;
+                lives = 3;
+                renderHealth();
+                triggerLevelUpBanner(currentLevel);
+            }
+            document.getElementById('gameLevel').innerText = `Level: ${currentLevel}`;
+        }
+
+        function handleKeyDown(e) {
+            if (!gameActive) return;
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keysState.left = true;
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keysState.right = true;
+        }
+
+        function handleKeyUp(e) {
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keysState.left = false;
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keysState.right = false;
+        }
+
+        function handlePointerMove(e) {
+            if (!gameActive) return;
+            const canvas = document.getElementById('gameCanvas');
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            basketPixelX = clientX - rect.left;
+            updateBasketPosition();
+        }
+
+        function startGame() {
+            gameActive = true;
+            score = 0;
+            lives = 3;
+            currentLevel = 1;
+            fallingEntities = [];
+            keysState.left = false;
+            keysState.right = false;
+
+            document.getElementById('gameScore').innerText = `Score: 0`;
+            document.getElementById('gameLevel').innerText = `Level: 1`;
+            document.getElementById('gameOverScreen').classList.remove('active');
+
+            const gameBox = document.getElementById('gameBox');
+            document.getElementById('gameModal').classList.add('active');
+            gameBox.focus();
+
+            const canvas = document.getElementById('gameCanvas');
+            basketPixelX = canvas.offsetWidth / 2 || 180;
+            updateBasketPosition();
+            renderHealth();
+
+            canvas.querySelectorAll('.falling-item, .score-float').forEach(e => e.remove());
+
+            canvas.addEventListener('mousemove', handlePointerMove, { passive: true });
+            canvas.addEventListener('touchmove', handlePointerMove, { passive: true });
+            canvas.addEventListener('touchstart', handlePointerMove, { passive: true });
+
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
+            window.addEventListener('keydown', handleKeyDown);
+            window.addEventListener('keyup', handleKeyUp);
+
+            lastSpawnTime = performance.now();
+            requestAnimationFrame(gameEngineLoop);
+        }
+
+        function spawnEntity() {
+            const canvas = document.getElementById('gameCanvas');
+            const canvasWidth = canvas.offsetWidth || 300;
+            const isEnemy = Math.random() < (0.28 + (currentLevel * 0.04));
+            const el = document.createElement('div');
+            el.className = 'falling-item';
+            el.innerText = isEnemy ? ENEMY_ITEMS[Math.floor(Math.random() * ENEMY_ITEMS.length)] : GOOD_ITEMS[Math.floor(Math.random() * GOOD_ITEMS.length)];
+
+            const itemX = Math.random() * (canvasWidth - 60) + 30;
+            canvas.appendChild(el);
+
+            const speedMultiplier = 1 + ((currentLevel - 1) * 0.22);
+            fallingEntities.push({
+                element: el,
+                isEnemy: isEnemy,
+                xPx: itemX,
+                yPx: -10,
+                speed: (Math.random() * 1.8 + (isEnemy ? 3.3 : 2.3)) * speedMultiplier,
+                dodged: false
+            });
+        }
+
+        function gameEngineLoop(timestamp) {
+            if (!gameActive) return;
+
+            if (keysState.left) {
+                basketPixelX -= 8;
+                updateBasketPosition();
+            }
+            if (keysState.right) {
+                basketPixelX += 8;
+                updateBasketPosition();
+            }
+
+            const spawnInterval = Math.max(220, 550 - (currentLevel * 42));
+            if (timestamp - lastSpawnTime > spawnInterval) {
+                spawnEntity();
+                lastSpawnTime = timestamp;
+            }
+
+            const canvas = document.getElementById('gameCanvas');
+            const canvasHeight = canvas.offsetHeight || 400;
+            const basketTop = canvasHeight - 38;
+
+            for (let i = fallingEntities.length - 1; i >= 0; i--) {
+                let ent = fallingEntities[i];
+                ent.yPx += ent.speed;
+                ent.element.style.transform = `translate(${ent.xPx - 18}px, ${ent.yPx}px)`;
+
+                if (ent.yPx >= basketTop - 18 && ent.yPx <= basketTop + 14) {
+                    if (Math.abs(ent.xPx - basketPixelX) < 45) {
+                        if (ent.isEnemy) {
+                            lives--;
+                            score = Math.max(0, score - 10);
+                            document.getElementById('gameScore').innerText = `Score: ${score}`;
+                            renderHealth();
+                            triggerDamage();
+                            showFloatingScore('-10', 'minus', ent.xPx, basketTop);
+                            checkLevelProgression();
+
+                            if (lives <= 0) {
+                                triggerDeath();
+                                return;
+                            }
+                        } else {
+                            score += 10;
+                            document.getElementById('gameScore').innerText = `Score: ${score}`;
+                            showFloatingScore('+10', 'plus', ent.xPx, basketTop);
+                            checkLevelProgression();
+                        }
+
+                        ent.element.remove();
+                        fallingEntities.splice(i, 1);
+                        continue;
+                    }
+                }
+
+                if (ent.isEnemy && !ent.dodged) {
+                    if (ent.yPx >= basketTop - 10 && ent.yPx <= basketTop + 20) {
+                        const distance = Math.abs(ent.xPx - basketPixelX);
+                        if (distance >= 45 && distance < 85) {
+                            score += 15;
+                            document.getElementById('gameScore').innerText = `Score: ${score}`;
+                            showFloatingScore('DODGE +15', 'dodge', ent.xPx, basketTop);
+                            checkLevelProgression();
+                            ent.dodged = true;
+                        }
+                    }
+                }
+
+                if (ent.yPx > canvasHeight + 20) {
+                    ent.element.remove();
+                    fallingEntities.splice(i, 1);
+                }
+            }
+
+            animationFrameId = requestAnimationFrame(gameEngineLoop);
+        }
+
+        function triggerDamage() {
+            const box = document.getElementById('gameBox');
+            box.classList.add('damage-flash');
+            setTimeout(() => box.classList.remove('damage-flash'), 300);
+        }
+
+        function triggerDeath() {
+            gameActive = false;
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            document.getElementById('finalScoreText').innerText = `Final Score: ${score} (Reached Level ${currentLevel})`;
+            document.getElementById('gameOverScreen').classList.add('active');
+        }
+
+        function closeGame() {
+            gameActive = false;
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            document.getElementById('gameModal').classList.remove('active');
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const activeBtn = document.querySelector('.segmented-control button.active');
+            if (activeBtn) moveGliderTo(activeBtn);
+        });
+
+        window.addEventListener('resize', () => {
+            const activeBtn = document.querySelector('.segmented-control button.active');
+            if (activeBtn) moveGliderTo(activeBtn);
+        });
+    </script>
+</body>
+</html>
